@@ -1,0 +1,17 @@
+{
+  "name": "jira-grafana-json-datasource",
+  "version": "1.0.0",
+  "description": "Jira Grafana JSON Datasource",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "jira-connector": "^2.8.0"
+  }
+}
