@@ -5,6 +5,7 @@
       driver: "bridge"
   services: 
     jira-grafana:
+      # Copy settings.env.example to settings.env
       env_file: settings.env
       build:
         context: .
