@@ -2,7 +2,13 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const JiraClient = require('jira-connector')
+const morgan = require('morgan')
+const passport = require('passport')
+const BasicStrategy = require('passport-http').BasicStrategy
+const AnonymousStrategy = require('passport-anonymous')
 
+
+// Instantiate our Jira client
 const jira = new JiraClient({
   host: process.env.JIRA_HOST,
   basic_auth: {
@@ -11,16 +17,50 @@ const jira = new JiraClient({
   }
 })
 
+
+// Setup an authentication strategy
+let authenticationStrategy = null
+if (process.env.HTTP_USER) {
+  passport.use(new BasicStrategy(
+    function (username, password, done) {
+
+        if (process.env.HTTP_USER == username &&
+           process.env.HTTP_PASS == password) {
+          return done(null, true)
+        }
+
+      return done(null, false)
+    }
+  ))
+
+  authenticationStrategy = 'basic'
+}
+else {
+  // Default ot allowing anonymous access
+  passport.use(new AnonymousStrategy())
+  authenticationStrategy = 'anonymous'
+}
+
+
 app.use(bodyParser.json())
+app.use(morgan('combined')) // We want to log all HTTP requests
+app.use(passport.initialize())
 
 
-app.get('/', (httpReq, httpRes) => {
-  httpRes.send('OK')
+// Should return 200 ok. Used for "Test connection" on the datasource config page.
+app.get('/',
+  passport.authenticate(authenticationStrategy, { session: false }),
+  (httpReq, httpRes) => {
+    httpRes.send(new Date() + ': OK')
 })
 
 
-app.all('/search', (httpReq, httpRes) => {
+// Used by the find metric options on the query tab in panels.
+app.all('/search', 
+  passport.authenticate(authenticationStrategy, { session: false }),
+  (httpReq, httpRes) => {
 
+  // The JiraClient doesn't have any way to list filters so we need to do a custom query
   jira.makeRequest({
     uri: jira.buildURL('/filter')
   }).then((jiraRes) => {
@@ -37,7 +77,11 @@ app.all('/search', (httpReq, httpRes) => {
   
 })
 
-app.post('/query', (httpReq, httpRes) => {
+
+// Should return metrics based on input.
+app.post('/query', 
+  passport.authenticate(authenticationStrategy, { session: false }),
+  (httpReq, httpRes) => {
 
   let result = []
 
@@ -100,6 +144,8 @@ app.post('/query', (httpReq, httpRes) => {
   
 })
 
+
 app.listen(3000)
+
 
 console.log('Server is listening to port 3000')
