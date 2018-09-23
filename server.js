@@ -55,6 +55,20 @@ app.get('/',
 })
 
 
+// Test the connection between Jira and this project
+app.get('/test-jira',
+  passport.authenticate(authenticationStrategy, { session: false }),
+  (httpReq, httpRes) => {
+    
+    jira.myself.getMyself().then((jiraRes) => {
+      httpRes.json(jiraRes)
+    }).catch((jiraErr) => {
+      httpRes.json(JSON.parse(jiraErr))
+    })
+
+  })
+
+
 // Used by the find metric options on the query tab in panels.
 app.all('/search', 
   passport.authenticate(authenticationStrategy, { session: false }),
