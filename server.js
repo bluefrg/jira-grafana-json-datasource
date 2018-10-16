@@ -105,8 +105,16 @@ app.post('/query',
 
   let p = httpReq.body.targets.map(target => {
 
+    // Default jql with time range
+    let jql = [`created >= "${from}"`, `created <= "${to}"`]
+
+    // Additional jql for targets
+    if ( target.target ) {
+      jql.push(`filter = "${target.target}"`)
+    }
+
     return jira.search.search({
-      jql: 'filter = "' + target.target + '" AND created >= "' + from + '" AND created <= "' + to + '"'
+      jql: jql.join(' AND ')
     }).then((jiraRes) => {
 
       if (target.type == 'timeserie') {
