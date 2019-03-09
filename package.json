@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.1",
-    "express": "^4.13.4",
+    "express": "^4.16",
     "jira-connector": "^2.8.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
