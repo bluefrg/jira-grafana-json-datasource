@@ -51,6 +51,7 @@ app.use(passport.initialize())
 app.get('/',
   passport.authenticate(authenticationStrategy, { session: false }),
   (httpReq, httpRes) => {
+    httpRes.set('Content-Type', 'text/plain')
     httpRes.send(new Date() + ': OK')
 })
 
