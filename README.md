@@ -1,7 +1,7 @@
 # Jira Grafana JSON Datasource Plugin
 ### Connect Grafana to Jira Cloud to retrieve metrics on your Jira issues.
 
-The original intention for this project was to allow me to show a singlestat count of open issues for my team's Service Desk.
+The original intention for this project was to allow me to show a singlestat count of open issues for my team's Jira Service Desk.
 
 ![Example](https://preview.ibb.co/hD2txU/screenshot_2018_09_23_094255.png)
 
@@ -17,7 +17,7 @@ $ docker run -d -p 3000:3000 --name jira-grafana -e JIRA_HOST=myjira.atlassian.n
 
 Confirm running by visiting: http://localhost:3000
 
-*Note: I've only tested running this project as a Docker container in an ECS cluster.*
+*Note: This project has only been tested locally, and as a ECS task using Jira Cloud. Jira On-Prem is not supported by the dependencies used in this project.*
 
 ### Atlassian credentials
 It's recommended to use API tokens from your [Atlassian API token page](https://id.atlassian.com/manage/api-tokens) for authentication instead of your primary account username and password.
