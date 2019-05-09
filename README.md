@@ -23,7 +23,7 @@ Confirm running by visiting: http://localhost:3000
 It's recommended to use API tokens from your [Atlassian API token page](https://id.atlassian.com/manage/api-tokens) for authentication instead of your primary account username and password.
 
 ### Testing Jira connection
-You can validate the connection to Jira is authenticating properly by visiting the `test-jria` endpoint at: http://localhost:3000/test-jira
+You can validate the connection to Jira is authenticating properly by visiting the `test-jira` endpoint at: http://localhost:3000/test-jira
 
 A successful authentication will return the current user, a failure will return the HTTP response and detailed error message from Jira.
 
